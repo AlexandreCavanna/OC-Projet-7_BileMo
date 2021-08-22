@@ -62,4 +62,17 @@ class ApiUserController extends AbstractController
             ], 400);
         }
     }
+
+    /**
+     * @Route("/api/customer/{customerId}/user/{userId}", name="api_user_create", methods={"DELETE"})
+     * @ParamConverter("customer", options={"mapping": {"customerId": "id"}})
+     * @ParamConverter("user", options={"mapping": {"userId": "id"}})
+     */
+    public function deleteUser(User $user, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->json(['status' => 200, 'message' => 'This User has been deleted.']);
+    }
 }
