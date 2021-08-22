@@ -11,12 +11,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiPhoneController extends AbstractController
 {
     /**
+     * @Route("/api/phones", name="api_phone_index", methods={"GET"})
+     */
+    public function showPhonesIndex(PhoneRepository $phoneRepository): Response
+    {
+        return $this->json($phoneRepository->findAll());
+    }
+
+    /**
      * @Route("/api/phone/{id}", name="api_phone_details", requirements={"id"="\d+"}, methods={"GET"})
      */
     public function showPhoneDetails(Phone $phone, PhoneRepository $phoneRepository): Response
     {
-        return $this->json(
-            $phoneRepository->find($phone)
-        );
+        return $this->json($phoneRepository->find($phone));
     }
 }
