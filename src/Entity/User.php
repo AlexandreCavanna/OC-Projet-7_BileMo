@@ -16,30 +16,35 @@ class User
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups(groups="show_customer_users_index")
+     * @Groups(groups="show_customer_user_details")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
+     * @Groups(groups="show_customer_user_details")
      */
     private $fistname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
+     * @Groups(groups="show_customer_user_details")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
+     * @Groups(groups="show_customer_user_details")
      */
     private $email;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups(groups="show_customer_users_index")
+     * @Groups(groups="show_customer_user_details")
      */
     private $createdAt;
 

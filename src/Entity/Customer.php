@@ -46,6 +46,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="customer")
      * @Groups(groups="show_customer_users_index")
+     * @Groups(groups="show_customer_user_details")
      */
     private $users;
 
