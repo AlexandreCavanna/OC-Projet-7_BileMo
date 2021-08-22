@@ -17,6 +17,7 @@ class User
      * @ORM\Column(type="integer")
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
+     * @Groups(groups="create_user")
      */
     private $id;
 
@@ -24,13 +25,15 @@ class User
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
+     * @Groups(groups="create_user")
      */
-    private $fistname;
+    private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
+     * @Groups(groups="create_user")
      */
     private $lastname;
 
@@ -38,6 +41,7 @@ class User
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
+     * @Groups(groups="create_user")
      */
     private $email;
 
@@ -45,12 +49,14 @@ class User
      * @ORM\Column(type="datetime")
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
+     * @Groups(groups="create_user")
      */
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups(groups="create_user")
      */
     private $customer;
 
@@ -59,14 +65,14 @@ class User
         return $this->id;
     }
 
-    public function getFistname(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->fistname;
+        return $this->firstname;
     }
 
-    public function setFistname(string $fistname): self
+    public function setFirstname(string $firstname): self
     {
-        $this->fistname = $fistname;
+        $this->firstname = $firstname;
 
         return $this;
     }
