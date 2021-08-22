@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
@@ -18,32 +19,38 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups(groups="show_users_index")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups(groups="show_users_index")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups(groups="show_users_index")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups(groups="show_users_index")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups(groups="show_users_index")
      */
     private $company;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="customer")
+     * @Groups(groups="show_users_index")
      */
     private $users;
 
