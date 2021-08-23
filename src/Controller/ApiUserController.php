@@ -34,7 +34,7 @@ class ApiUserController extends AbstractController
     public function showUserDetails(Customer $customer, User $user, UserRepository $userRepository): Response
     {
         return $this->json(
-            $userRepository->findOneBy(['customer' => $customer, 'id' => $user]),
+           $user,
             200,
             [],
             ['groups' => 'show_customer_user_details']

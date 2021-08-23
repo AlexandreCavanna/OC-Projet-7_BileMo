@@ -24,8 +24,8 @@ class CustomerFixtures extends BaseFixture
 
         $this->createMany(Customer::class, 30, function (Customer $customer) {
             $customer->setEmail($this->faker->email());
-            $customer->setPassword($this->passwordHasher->hashPassword($customer, $this->faker->password()));
-            // $customer->setRoles();
+            $customer->setPassword($this->passwordHasher->hashPassword($customer, 'password'));
+            $customer->setRoles(['ROLE_USER']);
             $customer->setCompany($this->faker->company());
 
         });
