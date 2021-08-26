@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Entity\User;
 use App\Repository\CustomerRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +20,7 @@ class ApiUserController extends AbstractController
 {
     /**
      * @Route("/api/customer/{id}/users", name="api_user_index", methods={"GET"})
+     * @IsGranted("USER_INDEX", subject="customer")
      */
     public function showUsersIndex(Customer $customer, CustomerRepository $customerRepository): Response
     {
@@ -30,11 +31,12 @@ class ApiUserController extends AbstractController
      * @Route("/api/customer/{customerId}/user/{userId}", name="api_user_details", methods={"GET"})
      * @ParamConverter("customer", options={"mapping": {"customerId": "id"}})
      * @ParamConverter("user", options={"mapping": {"userId": "id"}})
+     * @IsGranted("USER_VIEW", subject="user")
      */
-    public function showUserDetails(Customer $customer, User $user, UserRepository $userRepository): Response
+    public function showUserDetails(User $user): Response
     {
         return $this->json(
-           $user,
+            $user,
             200,
             [],
             ['groups' => 'show_customer_user_details']
@@ -43,6 +45,7 @@ class ApiUserController extends AbstractController
 
     /**
      * @Route("/api/customer/{id}/user", name="api_user_create", methods={"POST"})
+     * @IsGranted("USER_CREATE", subject="customer")
      */
     public function createUser(Request $request, Customer $customer, SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -64,15 +67,16 @@ class ApiUserController extends AbstractController
     }
 
     /**
-     * @Route("/api/customer/{customerId}/user/{userId}", name="api_user_create", methods={"DELETE"})
+     * @Route("/api/customer/{customerId}/user/{userId}", name="api_user_delete", methods={"DELETE"})
      * @ParamConverter("customer", options={"mapping": {"customerId": "id"}})
      * @ParamConverter("user", options={"mapping": {"userId": "id"}})
+     * @IsGranted("USER_DELETE", subject="user")
      */
     public function deleteUser(User $user, EntityManagerInterface $entityManager): JsonResponse
     {
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->json(['status' => 200, 'message' => 'This User has been deleted.']);
+        return $this->json(['status' => 204, 'message' => 'This User has been deleted.'], 204);
     }
 }
