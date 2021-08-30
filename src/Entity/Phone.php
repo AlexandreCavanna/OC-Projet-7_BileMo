@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PhoneRepository;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass=PhoneRepository::class)
@@ -14,38 +15,45 @@ class Phone
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @OA\Property(description="The unique identifier of the smartphone.")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @OA\Property(description="The build number identifier of the smartphone.")
      */
-    private $buildNumber;
+    private int $buildNumber;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @OA\Property(description="Company who made the smartphone.", maxLength=50)
      */
-    private $manufacturer;
+    private string $manufacturer;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @OA\Property(description="Model name of the smartphone.", maxLength=255)
      */
-    private $modelName;
+    private string $modelName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @OA\Property(description="Operating system of the smartphone.", maxLength=255)
      */
-    private $operatingSystem;
+    private string $operatingSystem;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @OA\Property(description="Serial number of the smartphone.", maxLength=255)
      */
-    private $serialNumber;
+    private string $serialNumber;
 
     /**
      * @ORM\Column(type="integer")
+     * @OA\Property(description="Version of the smartphone.")
      */
-    private $version;
+    private int $version;
 
     public function getId(): ?int
     {
