@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -26,39 +27,44 @@ class User
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
      * @Groups(groups="create_user")
+     * @OA\Property(description="firstname of user.", maxLength=255)
      */
-    private $firstname;
+    private string $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
      * @Groups(groups="create_user")
+     * @OA\Property(description="lastname of user.", maxLength=255)
      */
-    private $lastname;
+    private string $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
      * @Groups(groups="create_user")
+     * @OA\Property(description="email of user.", maxLength=255)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
      * @Groups(groups="create_user")
+     * @OA\Property(description="date when user has been created.")
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups(groups="create_user")
+     * @OA\Property(description="date when user has been created."))
      */
-    private $customer;
+    private Customer $customer;
 
     public function getId(): ?int
     {

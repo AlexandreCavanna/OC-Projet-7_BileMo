@@ -25,30 +25,31 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="json")
+     * @var string[]
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $company;
+    private string $company;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="customer")
      * @Groups(groups="show_customer_users_index")
      * @Groups(groups="show_customer_user_details")
      */
-    private $users;
+    private Collection $users;
 
     public function __construct()
     {
