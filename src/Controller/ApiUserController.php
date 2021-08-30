@@ -15,12 +15,34 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 
 class ApiUserController extends AbstractController
 {
     /**
      * @Route("/api/customer/{id}/users", name="api_user_index", methods={"GET"})
      * @IsGranted("USER_INDEX", subject="customer")
+     * @OA\Response(
+     *     response=200,
+     *     description="Return all users of a customer.",
+     *     @Model(type=User::class, groups={"show_customer_users_index"})
+     * )
+     *
+     * @OA\Response(
+     *     response="404",
+     *     description="Return a 404 not found if the page parameter don't exist.",
+     * )
+     *
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Unique identifier of the customer.",
+     *     required=true
+     * )
+     * @OA\Tag(name="User")
+     * @Security(name="Bearer")
      */
     public function showUsersIndex(Customer $customer, CustomerRepository $customerRepository): Response
     {
@@ -32,6 +54,15 @@ class ApiUserController extends AbstractController
      * @ParamConverter("customer", options={"mapping": {"customerId": "id"}})
      * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @IsGranted("USER_VIEW", subject="user")
+     * @OA\Response(
+     *     response=200,
+     *     description="Return user of a customer.",
+     * )
+     * @OA\Response(
+     *     response="404",
+     *     description="Return a 404 not found if the page parameter don't exist.",
+     * )
+     * @OA\Tag(name="User")
      */
     public function showUserDetails(User $user): Response
     {
@@ -46,6 +77,22 @@ class ApiUserController extends AbstractController
     /**
      * @Route("/api/customer/{id}/user", name="api_user_create", methods={"POST"})
      * @IsGranted("USER_CREATE", subject="customer")
+     * @OA\Response(
+     *     response="201",
+     *     description="Create a new user for a customer."
+     * )
+     * @OA\Response(
+     *     response="400",
+     *     description="Show errors validation."
+     * )
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Unique identifier of the customer",
+     *     required=true
+     * )
+     * @OA\Tag(name="User")
+     * @Security(name="Bearer")
      */
     public function createUser(Request $request, Customer $customer, SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -71,6 +118,12 @@ class ApiUserController extends AbstractController
      * @ParamConverter("customer", options={"mapping": {"customerId": "id"}})
      * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @IsGranted("USER_DELETE", subject="user")
+     * @OA\Response(
+     *     response="204",
+     *     description="Delete user of a customer."
+     * )
+     * @OA\Tag(name="User")
+     * @Security(name="Bearer")
      */
     public function deleteUser(User $user, EntityManagerInterface $entityManager): JsonResponse
     {
