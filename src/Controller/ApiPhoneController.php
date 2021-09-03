@@ -47,7 +47,7 @@ class ApiPhoneController extends AbstractController
     {
         return $this->json(
             $phoneRepository->getPaginatedPhones(
-                $request->query->getInt('offset') ?? 1,
+                $request->query->get('offset') ?? 1,
                 $request->query->get('limit') ?? 10
             )
         );
