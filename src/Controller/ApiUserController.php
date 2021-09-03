@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Entity\User;
 use App\Repository\CustomerRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -41,12 +42,33 @@ class ApiUserController extends AbstractController
      *     description="Unique identifier of the customer.",
      *     required=true
      * )
+     *
+     * * @OA\Parameter(
+     *     name="offset",
+     *     in="query",
+     *     description="The number of items to skip before starting to collect the result set.",
+     *     required=false,
+     * )
+
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="The number of items to return.",
+     *     required=false,
+     * )
+     *
      * @OA\Tag(name="User")
      * @Security(name="Bearer")
      */
-    public function showUsersIndex(Customer $customer, CustomerRepository $customerRepository): Response
+    public function showUsersIndex(Request $request, Customer $customer, UserRepository $userRepository): Response
     {
-        return $this->json($customerRepository->find($customer), 200, [], ['groups' => 'show_customer_users_index']);
+
+        return $this->json(
+            $userRepository->getPaginatedUsers($request),
+            200,
+            [],
+            ['groups' => 'show_customer_users_index']
+        );
     }
 
     /**
