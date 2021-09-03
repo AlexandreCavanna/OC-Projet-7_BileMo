@@ -19,22 +19,15 @@ class PhoneRepository extends ServiceEntityRepository
         parent::__construct($registry, Phone::class);
     }
 
-    // /**
-    //  * @return Phone[] Returns an array of Phone objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+    public function getPaginatedPhones($offset = 1, $limit = 10){
+        $query = $this->createQueryBuilder('p');
+
+        $query
+            ->setFirstResult(($offset * $limit) - $limit)
+            ->setMaxResults($limit)
         ;
+        return $query->getQuery()->getResult();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Phone

@@ -8,6 +8,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,18 +25,32 @@ class ApiPhoneController extends AbstractController
      *     response="404",
      *     description="Return a 404 not found if the page parameter don't exist.",
      * )
+     *
      * @OA\Parameter(
-     *     name="page",
-     *     in="path",
-     *     description="Page of the list.",
-     *     required=false
+     *     name="offset",
+     *     in="query",
+     *     description="The number of items to skip before starting to collect the result set.",
+     *     required=false,
      * )
+
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="The number of items to return.",
+     *     required=false,
+     * )
+     *
      * @OA\Tag(name="Phone")
      * @Security(name="Bearer")
      */
-    public function showPhonesIndex(PhoneRepository $phoneRepository): Response
+    public function showPhonesIndex(Request $request, PhoneRepository $phoneRepository): Response
     {
-        return $this->json($phoneRepository->findAll());
+        return $this->json(
+            $phoneRepository->getPaginatedPhones(
+                $request->query->getInt('offset') ?? 1,
+                $request->query->get('limit') ?? 10
+            )
+        );
     }
 
     /**
